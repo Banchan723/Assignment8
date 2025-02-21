@@ -100,11 +100,6 @@ void ASpartaCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 					&ASpartaCharacter::Look
 				);
 			}
-			else
-			{
-				UE_LOG(LogTemp, Error, TEXT("LookAction is nullptr! Check input bindings."));
-			}
-
 			// 스프린트 입력 바인딩
 			if (PlayerController->SprintAction)
 			{
@@ -121,10 +116,6 @@ void ASpartaCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 					this,
 					&ASpartaCharacter::StopSprint
 				);
-			}
-			else
-			{
-				UE_LOG(LogTemp, Error, TEXT("SprintAction is nullptr! Check input bindings."));
 			}
 		}
 	}
@@ -238,8 +229,8 @@ void ASpartaCharacter::UpdateOverheadHP()
 
 	if (UProgressBar* HPBar = Cast<UProgressBar>(OverheadWidgetInstance->GetWidgetFromName(TEXT("HealthBar"))))
 	{
-		float HPPercent = 0.f;
-		if (MaxHealth > 0.f)
+		float HPPercent = 0.0f;
+		if (MaxHealth > 0.0f)
 		{
 			HPPercent = Health / MaxHealth;
 		}
@@ -249,6 +240,11 @@ void ASpartaCharacter::UpdateOverheadHP()
 		if (HPPercent < 0.3f)
 		{
 			FLinearColor LowHPColor = FLinearColor::Red;
+			HPBar->SetFillColorAndOpacity(LowHPColor);
+		}
+		else
+		{
+			FLinearColor LowHPColor = FLinearColor::Blue;
 			HPBar->SetFillColorAndOpacity(LowHPColor);
 		}
 

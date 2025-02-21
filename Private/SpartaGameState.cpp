@@ -173,6 +173,10 @@ void ASpartaGameState::UpdateHUD()
 					float RemainingTime = GetWorldTimerManager().GetTimerRemaining(LevelTimerHandle);
 					TimeText->SetText(FText::FromString(FString::Printf(TEXT("남은 시간 : %.1f"), RemainingTime)));
 					TimeText->SetColorAndOpacity(FSlateColor(FLinearColor::Green));
+					if (RemainingTime <= 10.f)
+					{
+						TimeText->SetColorAndOpacity(FSlateColor(FLinearColor::Red));
+					}
 
 				}
 
