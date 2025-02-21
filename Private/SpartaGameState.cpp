@@ -65,6 +65,7 @@ void ASpartaGameState::StartLevel()
 		if (SpartaGameInstance)
 		{
 			CurrentLevelIndex = SpartaGameInstance->CurrentLevelIndex;
+			ItemToSpawn = SpartaGameInstance->PersistentItemToSpawn;  // GameInstance에서 값 가져오기
 		}
 	}
 
@@ -73,8 +74,6 @@ void ASpartaGameState::StartLevel()
 
 	TArray<AActor*> FoundVolumes;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASpawnVolume::StaticClass(), FoundVolumes);
-
-	const int32 ItemToSpawn = 40;
 
 	for (int32 i = 0; i < ItemToSpawn; i++)
 	{
@@ -91,6 +90,7 @@ void ASpartaGameState::StartLevel()
 			}
 		}
 	}
+
 
 	GetWorldTimerManager().SetTimer(
 		LevelTimerHandle,
@@ -128,6 +128,7 @@ void ASpartaGameState::EndLevel()
 			AddScore(Score);
 			CurrentLevelIndex++;
 			SpartaGameInstance->CurrentLevelIndex = CurrentLevelIndex;
+			SpartaGameInstance->PersistentItemToSpawn += 20;
 		}
 	}
 
@@ -194,7 +195,31 @@ void ASpartaGameState::UpdateHUD()
 					LevelIndexText->SetText(FText::FromString(FString::Printf(TEXT("%d단계"), CurrentLevelIndex + 1)));
 					LevelIndexText->SetColorAndOpacity(FSlateColor(FLinearColor::Black));
 				}
+
+				if (UTextBlock* TotalCoinText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("TotalCoin"))))
+				{
+					TotalCoinText->SetText(FText::FromString(FString::Printf(TEXT("전체 코인% d / % d"), CollectedCoinCount, SpawnedCoinCount)));
+					TotalCoinText->SetColorAndOpacity(FSlateColor(FLinearColor::Blue));
+				}
+
+				if (UTextBlock* ItemToSpawnText = Cast<UTextBlock>(HUDWidget->GetWidgetFromName(TEXT("ItemToSpawn"))))
+				{
+					if (UGameInstance* GameInstance = GetGameInstance())  // 현재 게임 인스턴스 가져오기
+					{
+						USpartaGameInstance* SpartaGameInstance = Cast<USpartaGameInstance>(GameInstance);  // 캐스팅하여 사용
+						if (SpartaGameInstance)
+						{
+							ItemToSpawnText->SetText(FText::FromString(FString::Printf(TEXT("레벨에 생성된 아이템 : %d"), SpartaGameInstance->PersistentItemToSpawn)));
+							ItemToSpawnText->SetColorAndOpacity(FSlateColor(FLinearColor::Red));
+						}
+					}
+				}
+
 			}
 		}
 	}
+}
+
+void ASpartaGameState::LevelUpdateCoin()
+{
 }

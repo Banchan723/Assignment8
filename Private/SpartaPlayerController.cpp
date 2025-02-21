@@ -149,3 +149,13 @@ void ASpartaPlayerController::StartGame()
 	UGameplayStatics::OpenLevel(GetWorld(), FName("BasicLevel"));
 	SetPause(false);
 }
+
+void ASpartaPlayerController::QuitGame()
+{
+	UKismetSystemLibrary::QuitGame(
+		GetWorld(),
+		this,
+		EQuitPreference::Quit,
+		false
+	);
+}

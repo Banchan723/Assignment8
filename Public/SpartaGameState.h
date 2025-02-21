@@ -26,6 +26,8 @@ public:
 	int32 CurrentLevelIndex;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Level")
 	int32 MaxLevels;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
+	int32 ItemToSpawn = 40;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Level")
 	TArray<FName> LevelMapNames;
@@ -44,5 +46,6 @@ public:
 	void OnLevelTimeUp();
 	void OnCoinCollected();
 	void EndLevel();
+	void LevelUpdateCoin();
 	void UpdateHUD();
 };

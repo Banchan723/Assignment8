@@ -16,6 +16,8 @@ public:
 	int32 TotalScore;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "GameData")
 	int32 CurrentLevelIndex;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Level")
+	int32 PersistentItemToSpawn;
 
 	UFUNCTION(Blueprintcallable, Category = "GameData")
 	void AddToScore(int32 Amount);
